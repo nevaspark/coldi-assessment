@@ -10,7 +10,7 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "https://coldi-assessments-7oi7efq4c-octers-projects.vercel.app/",
+      "https://coldi-assessments-iux0afxlk-octers-projects.vercel.app",
       "https://unexonerative-merilyn-emulatively.ngrok-free.dev"
     ],
     credentials: true,

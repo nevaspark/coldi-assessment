@@ -19,7 +19,7 @@ router.post('/login', async (req, res) => {
   res.json({ token, me: { id: user.id, role: user.role, email: user.email, tenant_id: user.tenant_id, tenant_name: tenant?.name || null } });
 });
 
-router.get('/me', authRequired, async (req, res) => {
+router.post('/me', authRequired, async (req, res) => {
   res.json({ me: req.user });
 });
 

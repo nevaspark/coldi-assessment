@@ -12,14 +12,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => res.send('Coldi backend up'));
+app.post('/', (req, res) => res.send('Coldi backend up'));
 
 app.use('/auth', authRoutes);
 app.use('/events', eventsRoutes);
 app.use('/tenant', tenantRoutes);
 app.use('/admin', adminRoutes);
 
-app.get('/healthz', (req, res) => res.json({ ok: true }));
+app.post('/healthz', (req, res) => res.json({ ok: true }));
 
 await syncAll();
 

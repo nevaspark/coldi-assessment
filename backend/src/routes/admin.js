@@ -5,7 +5,7 @@ import { publishAdmin, publishTenant } from '../services/sse.js';
 
 const router = Router();
 
-router.get('/tenants', authRequired, role('admin'), async (req, res) => {
+router.post('/tenants', authRequired, role('admin'), async (req, res) => {
   const tenants = await Tenant.findAll();
   const balances = await Balance.findAll();
   const calls = await Call.findAll();

@@ -7,7 +7,7 @@ import { JWT_SECRET } from '../config.js';
 import { User } from '../models/index.js';
 
 const router = Router();
-router.get('/', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   const tenantId = req.query.tenantId ? parseInt(req.query.tenantId, 10) : null;
 
   const header = req.headers.authorization || '';

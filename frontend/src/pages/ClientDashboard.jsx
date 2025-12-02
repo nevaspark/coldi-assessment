@@ -13,8 +13,8 @@ export default function ClientDashboard() {
 
   const refresh = async () => {
     if (!me?.tenant_id) return;
-    const s = await api.get(`/tenant/${me.tenant_id}/summary`);
-    const b = await api.get(`/tenant/${me.tenant_id}/bot`);
+    const s = await api.post(`/tenant/${me.tenant_id}/summary`);
+    const b = await api.post(`/tenant/${me.tenant_id}/bot`);
     setSummary(s.data);
     setBot(b.data);
   };

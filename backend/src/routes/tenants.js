@@ -8,7 +8,7 @@ import { calculateCostCents } from '../services/billing.js';
 
 const router = Router();
 
-router.get('/:tenantId/summary', authRequired, enforceTenantAccess, async (req, res) => {
+router.post('/:tenantId/summary', authRequired, enforceTenantAccess, async (req, res) => {
   const tenantId = parseInt(req.params.tenantId, 10);
   const balance = await Balance.findByPk(tenantId);
   const calls = await Call.findAll({ where: { tenant_id: tenantId } });
@@ -21,13 +21,13 @@ router.get('/:tenantId/summary', authRequired, enforceTenantAccess, async (req, 
   });
 });
 
-router.get('/:tenantId/bot', authRequired, enforceTenantAccess, async (req, res) => {
+router.post('/:tenantId/bot', authRequired, enforceTenantAccess, async (req, res) => {
   const tenantId = parseInt(req.params.tenantId, 10);
   const tenant = await Tenant.findByPk(tenantId);
   res.json({ bot_id: tenant.bot_id, tenant_name: tenant.name });
 });
 
-router.get('/:tenantId/calls', authRequired, enforceTenantAccess, async (req, res) => {
+router.post('/:tenantId/calls', authRequired, enforceTenantAccess, async (req, res) => {
   const tenantId = parseInt(req.params.tenantId, 10);
   const calls = await Call.findAll({ where: { tenant_id: tenantId }, order: [['id','DESC']], limit: 50 });
   res.json(calls);

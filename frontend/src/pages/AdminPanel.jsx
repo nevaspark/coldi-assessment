@@ -13,7 +13,7 @@ export default function AdminPanel() {
   const [selected, setSelected] = useState(null);
 
   const refresh = async () => {
-    const { data } = await api.get('/admin/tenants');
+    const { data } = await api.post('/admin/tenants');
     setRows(data);
   };
 
