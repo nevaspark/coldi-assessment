@@ -1,20 +1,36 @@
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://coldi-project.vercel.app:5001';
+// Read base URL from env, or fall back to current origin (same domain)
+const rawApiBase = import.meta.env.VITE_API_URL;
 
+const API_BASE =
+  (typeof rawApiBase === 'string' && rawApiBase.trim() !== '')
+    ? rawApiBase.replace(/\/+$/, '') // remove trailing slash
+    : (typeof window !== 'undefined' ? window.location.origin : '');
+
+// Axios instance for normal HTTP requests
 export const api = axios.create({
   baseURL: API_BASE,
 });
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  if (token) {
+    config.headers = config.headers || {};
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
 });
 
+// SSE URL builder
 export function sseUrl(tenantId) {
-  const base = `${API_BASE}/events`;
   const token = localStorage.getItem('token');
-  if (tenantId) return `${base}?tenantId=${tenantId}${token ? `&token=${encodeURIComponent(token)}` : ''}`;
-  return token ? `${base}?token=${encodeURIComponent(token)}` : base;
+
+  // /events will be relative to API_BASE (backend domain or same origin)
+  const url = new URL('/events', API_BASE);
+
+  if (tenantId) url.searchParams.set('tenantId', tenantId);
+  if (token) url.searchParams.set('token', token);
+
+  return url.toString();
 }
