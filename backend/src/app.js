@@ -10,13 +10,14 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "https://coldi-assessments-v4yn-jcxk6ypho-octers-projects.vercel.app",
+      "https://coldi-assessments-7oi7efq4c-octers-projects.vercel.app/",
       "https://unexonerative-merilyn-emulatively.ngrok-free.dev"
     ],
     credentials: true,
   })
 );
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => res.send('Coldi backend up'));
 
