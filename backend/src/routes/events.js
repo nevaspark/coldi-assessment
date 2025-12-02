@@ -7,7 +7,8 @@ import { JWT_SECRET } from '../config.js';
 import { User } from '../models/index.js';
 
 const router = Router();
-router.post('/', async (req, res, next) => {
+
+async function subscribeHandler(req, res, next) {
   const tenantId = req.query.tenantId ? parseInt(req.query.tenantId, 10) : null;
 
   const header = req.headers.authorization || '';
@@ -37,6 +38,10 @@ router.post('/', async (req, res, next) => {
     if (!tenantId || tenantId !== req.user.tenant_id) return res.status(403).end();
   }
   subscribe(res, tenantId);
-});
+}
+
+// Accept both GET (EventSource) and POST (some tunnels/tools) for compatibility
+router.get('/', subscribeHandler);
+router.post('/', subscribeHandler);
 
 export default router;

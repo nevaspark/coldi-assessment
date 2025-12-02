@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { api } from '../api';
 import dayjs from 'dayjs';
 
-function centsToUSD(c) { return `$${(c/100).toFixed(2)}`; }
+function centsToUSD(c) { return `$${(c / 100).toFixed(2)}`; }
 
 export default function CallPanel({ tenantId, bot }) {
   const [activeCall, setActiveCall] = useState(null);
@@ -20,11 +20,11 @@ export default function CallPanel({ tenantId, bot }) {
     return Math.max(0, Math.floor((now - start) / 1000));
   }, [activeCall, now]);
 
-  const estCostCents = Math.max(40, Math.round((durationSec/60) * 40));
+  const estCostCents = Math.max(40, Math.round((durationSec / 60) * 40));
 
   const startCall = async () => {
     try {
-      const { data } = await api.post(`/tenant/${tenantId}/calls`);
+      const { data } = await api.post(`/tenant/${tenantId}/calls`, { start: true });
       setActiveCall(data);
     } catch (err) {
       console.error('startCall error', err);
@@ -34,12 +34,24 @@ export default function CallPanel({ tenantId, bot }) {
 
   const endCall = async () => {
     if (!activeCall) return;
+    if (!Number.isFinite(activeCall.id)) {
+      alert('Call id is invalid. Please try starting the call again.');
+      return;
+    }
+    // optimistic UI update: clear active call immediately so the UI shows Idle
+    // const previous = activeCall;
+    // setActiveCall(null);
     try {
       const { data } = await api.post(`/tenant/${tenantId}/calls/${activeCall.id}/end`);
       setActiveCall(null);
+      window.location.reload();
+      // success — we already cleared the active call
+      console.log('call ended', data);
     } catch (err) {
       console.error('endCall error', err);
       alert(err.response?.data?.error || err.message || 'Failed to end call');
+      // restore previous call state so user can retry
+      setActiveCall(activeCall);
     }
   };
 

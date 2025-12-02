@@ -10,7 +10,7 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "https://coldi-assessments-iux0afxlk-octers-projects.vercel.app",
+      "https://coldi-assessment.vercel.app",
       "https://unexonerative-merilyn-emulatively.ngrok-free.dev"
     ],
     credentials: true,
@@ -19,13 +19,13 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => res.send('Coldi backend up'));
+app.post('/', (req, res) => res.send('Coldi backend up'));
 
 app.use('/auth', authRoutes);
 app.use('/events', eventsRoutes);
 app.use('/tenant', tenantRoutes);
 app.use('/admin', adminRoutes);
 
-app.get('/healthz', (req, res) => res.json({ ok: true }));
+app.post('/healthz', (req, res) => res.json({ ok: true }));
 
 export default app;
