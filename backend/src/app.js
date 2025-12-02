@@ -6,16 +6,16 @@ import adminRoutes from './routes/admin.js';
 import eventsRoutes from './routes/events.js';
 
 const app = express();
-app.use(cors());
-// app.use(
-//   cors({
-//     origin: [
-//       "https://coldi-assessments-v4yn-m7vxxcqzw-octers-projects.vercel.app",
-//       "https://unexonerative-merilyn-emulatively.ngrok-free.dev"
-//     ],
-//     credentials: true,
-//   })
-// );
+// app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "https://coldi-assessments-v4yn-jcxk6ypho-octers-projects.vercel.app",
+      "https://unexonerative-merilyn-emulatively.ngrok-free.dev"
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.get('/', (req, res) => res.send('Coldi backend up'));
